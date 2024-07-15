@@ -5,8 +5,7 @@ import os
 
 
 
-with open('api_key.json', 'r') as key_file:
-    api_key = json.load(key_file)['key']
+api_key = st.secrets["API_KEY"]
 
 client = OpenAI(api_key=api_key)
 
