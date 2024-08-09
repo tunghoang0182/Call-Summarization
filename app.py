@@ -5,7 +5,8 @@ import os
 
 
 
-api_key = st.secrets["API_KEY"]
+with open('api_key.json', 'r') as key_file:
+    api_key = json.load(key_file)['key']
 
 client = OpenAI(api_key=api_key)
 
@@ -26,58 +27,20 @@ def transcribe_audio(file_path):
 
 
 
-
-
 def summarize_text(text):
     summary_prompt = (
+        f"You are a sales assistant tasked with summarizing a phone conversation between a customer and our sales representative. "
+        f"Your role is to capture key information from the conversation to help our sales team review it later. "
+        f"Be precise when documenting personal information such as addresses, names, emails, etc., and carefully check the spelling of all details. "
+        f"The summary should follow the format below:\n\n"
+        f"Summarization:\n\n"
+        f"Client Information:\n"
         f"Phone Call Conversation: {text}\n"
-        "You are an AI sales assistant tasked with summarizing a phone call conversation between a customer and our sales representative. Your primary goal is to extract and organize information provided by the customer only. Do not include any information or statements made by the sales representative.\n\n"
-        "Contact Details\n"
-        "First Name:\n"
-        "Last Name:\n"
-        "Position:\n"
-        "Phone (Main):\n"
-        "Phone (Other):\n"
-        "Fax Number:\n"
-        "Email:\n\n"
-        "Company Details\n"
-        "Company:\n"
-        "Acronym:\n"
-        "Address Number:\n"
-        "Address Street:\n"
-        "Address Other:\n"
-        "Unit:\n"
-        "City:\n"
-        "Province / State:\n"
-        "Postal/Zip Code:\n"
-        "Country:\n\n"
-        "Service Package\n"
-        "Selected Package:\n"
-        "Monthly Cost:\n"
-        "Promotion:\n"
-        "Number of Lines:\n"
-        "Features:\n\n"
-        "Client Note\n"
-        "(Notes about the client's needs and considerations)\n\n"
-        "Installation Details\n"
-        "Scheduled Date:\n"
-        "Time Window:\n"
-        "Technician:\n\n"
-        "Follow-Up Plan\n"
-        "Send Proposal:\n"
-        "Follow-Up Call:\n"
-        "Purpose:\n\n"
-        "Timeline\n"
-        "Today:\n"
-        "[Date]:\n\n"
-        "Question From the Customer:\n"
-        "(List only the actual questions asked by the customer during the conversation. Do not infer or create questions.)\n\n"
-        "Remember: Only include information explicitly provided by the customer. Do not add any details from the sales representative or make any assumptions about missing information."
     )
 
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        temperature=0,
+        model="gpt-4o-mini",
+        temperature=0.5,
         messages=[
             {
                 "role": "system",
@@ -90,25 +53,6 @@ def summarize_text(text):
         ]
     )
     return response.choices[0].message.content
-
-def format_summary(summary_text):
-    sections = summary_text.split('\n\n')
-    formatted_sections = []
-    for section in sections:
-        lines = section.split('\n')
-        if len(lines) > 1:
-            formatted_section = f"## {lines[0]}\n"
-            for line in lines[1:]:
-                if ':' in line:
-                    key, value = line.split(':', 1)
-                    formatted_section += f"**{key.strip()}:** {value.strip()}\n\n"  # Add an extra newline here
-                else:
-                    formatted_section += f"{line}\n\n"  # Add an extra newline for non key-value lines too
-        else:
-            formatted_section = f"{section}\n\n"  # Add newlines to single-line sections as well
-        formatted_sections.append(formatted_section)
-    return '\n'.join(formatted_sections)  # Join with single newline as we've added extra newlines in the formatting
-
 
 
 # Streamlit UI
@@ -128,7 +72,23 @@ if uploaded_file is not None:
     with st.spinner('Summarizing transcription...'):
         transcription_response = transcribe_audio(file_path)
         transcription_text = transcription_response.text  # Adjust based on your actual API response structure
+
+        transcription_text_file = file_path.replace(os.path.splitext(file_path)[1], ".txt")
+        with open(transcription_text_file, "w") as text_file:
+            text_file.write(transcription_text)
+
+
         summary_text = summarize_text(transcription_text)
     
-    formatted_summary = format_summary(summary_text)
-    st.markdown(formatted_summary)
+    
+    st.markdown(summary_text)
+
+    with open(transcription_text_file, "r") as text_file:
+        st.download_button(
+            label="Download Transcription",
+            data=text_file.read(),
+            file_name=os.path.basename(transcription_text_file),
+            mime="text/plain"
+        )
+
+
