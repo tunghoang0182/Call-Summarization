@@ -31,6 +31,7 @@ def summarize_text(text):
         f"You are a sales assistant tasked with summarizing a phone conversation between a customer and our sales representative at Sunwire Inc. "
         f"Your role is to capture key information from the conversation to help our sales team review it later. "
         f"Be precise when documenting personal information such as addresses, names, emails, etc., and carefully check the spelling of all details. "
+        f"Please distinguish between the customer and the sales representative in your summary. The sales representative is always the person representing Sunwire Inc.\n"
         f"The summary should follow the format below:\n\n"
         f"Summarization:\n\n"
         f"Client Information:\n"
