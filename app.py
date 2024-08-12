@@ -28,7 +28,7 @@ def transcribe_audio(file_path):
 
 def summarize_text(text):
     summary_prompt = (
-        f"You are a sales assistant tasked with summarizing a phone conversation between a customer and our sales representative. "
+        f"You are a sales assistant tasked with summarizing a phone conversation between a customer and our sales representative at Sunwire Inc. "
         f"Your role is to capture key information from the conversation to help our sales team review it later. "
         f"Be precise when documenting personal information such as addresses, names, emails, etc., and carefully check the spelling of all details. "
         f"The summary should follow the format below:\n\n"
