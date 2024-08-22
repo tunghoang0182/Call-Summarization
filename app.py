@@ -35,7 +35,7 @@ def summarize_text(text):
         f"The summary should follow the format below:\n\n"
         f"Summarization:\n\n"
         f"Client Information:\n"
-        f"Phone Call Conversation: {text}\n"
+        f"Phone Call Conversation Summarization: {text}\n"
         f"Customer Information: Identify the customer based on their inquiries and responses.\n"
     )
 
