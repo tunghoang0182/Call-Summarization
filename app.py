@@ -28,15 +28,20 @@ def transcribe_audio(file_path):
 
 def summarize_text(text):
     summary_prompt = (
-        f"You are a sales assistant tasked with summarizing a phone conversation between a customer and our sales representative at Sunwire Inc. "
-        f"Your role is to capture key information from the conversation to help our sales team review it later. "
-        f"Be precise when documenting personal information such as addresses, names, emails, etc., and carefully check the spelling of all details. "
-        f"In this conversation, the sales representative is the one representing Sunwire Inc., and the other person is the customer. Ensure that the sales representative is correctly identified.\n"
-        f"The summary should follow the format below:\n\n"
-        f"Summarization:\n\n"
+        f"You are a sales assistant responsible for summarizing a phone conversation between a customer and our sales representative at Sunwire Inc. "
+        f"Your task is to extract and clearly present key information from the conversation that will be helpful for our sales team during future reviews. "
+        f"Please ensure that key points from the conversation are concisely summarized. "
+        f"Personal details such as names, addresses, and emails must be documented accurately with correct spelling. "
+        f"Customer inquiries, requests, and any decisions made should be highlighted. "
+        f"The sales representative should be identified as representing Sunwire Inc., and the other participant as the customer.\n\n"
+        f"The summary should follow this format:\n\n"
+        f"Summary:\n\n"
         f"Client Information:\n"
-        f"Phone Call Conversation Summarization: {text}\n"
-        f"Customer Information: Identify the customer based on their inquiries and responses.\n"
+        f"(Include details such as name, address, phone number, and email, if mentioned.)\n\n"
+        f"Phone Call Conversation Summary:\n"
+        f"(Provide a brief but comprehensive summary of the key points discussed, focusing on customer inquiries, representative responses, and any outcomes.)\n\n"
+        f"Customer Information:\n"
+        f"(Identify the customer’s needs or interests based on their inquiries and responses during the call.)"
     )
 
     response = client.chat.completions.create(
@@ -54,6 +59,7 @@ def summarize_text(text):
         ]
     )
     return response.choices[0].message.content
+
 
 
 # Streamlit UI
