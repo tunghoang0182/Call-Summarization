@@ -34,13 +34,13 @@ def summarize_text(text):
         f"In this conversation, the sales representative is the one representing Sunwire Inc., and the other person is the customer. Ensure that the sales representative is correctly identified.\n"
         f"The summary should follow the format below:\n\n"
         f"Client Information:\n"
-        f"Phone Call Key Points Conversation Summarization: {text}\n"
-        f"Customer Information: Identify the customer based on their inquiries and responses.\n"
+        f"Phone Call Key Points: {text}\n"
+        f"Customer Information: Identify the customer based on their inquiries and responses if there is.\n"
     )
 
     response = client.chat.completions.create(
         model="gpt-4o-mini",
-        temperature=0.5,
+        temperature=0.2,
         messages=[
             {
                 "role": "system",
