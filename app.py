@@ -36,6 +36,7 @@ def summarize_text(text):
         f"Client Information:\n"
         f"Phone Call Key Points: {text}\n"
         f"Customer Notes: Identify the customer based on their inquiries and responses if there is.\n"
+        f"Recommendation: Finally, Give some recommendations for our sale team".\n"
     )
 
     response = client.chat.completions.create(
