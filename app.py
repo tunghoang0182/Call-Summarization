@@ -32,7 +32,6 @@ def summarize_text(text):
         f"Your role is to capture key information from the conversation to help our sales team review it later. "
         f"Be precise when documenting personal information such as addresses, names, emails, etc., and carefully check the spelling of all details. "
         f"In this conversation, the sales representative is the one representing Sunwire Inc., and the other person is the customer. Ensure that the sales representative is correctly identified.\n"
-        f"Ensure that the sales representative is correctly identified as the Sunwire representative, whose name is predetermined (e.g., Ken in this case). "
         f"Do not include any details specific to Sunwire Inc., such as Sunwire email addresses (e.g., any ending with sunwire.ca) or internal Sunwire information, under the client's information. Such details should only be mentioned under the Phone Call Key Points or elsewhere as relevant.\n"     
         f"After transcribing the audio, if the content is not a conversation or contains irrelevant information (such as hold music), respond with 'The audio content does not contain a valid conversation for summarization.' Otherwise, summarize the content as instructed."
         f"The summary should follow the format below:\n\n"
