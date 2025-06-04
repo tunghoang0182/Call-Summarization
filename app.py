@@ -25,21 +25,21 @@ def transcribe_audio(file_path):
     return response
 
 
-
 def summarize_text(text):
-    summary_prompt = (
-        f"You are a sales assistant tasked with summarizing a phone conversation between a customer and our sales representative at Sunwire Inc. "
-        f"Your role is to capture key information from the conversation to help our sales team review it later. "
-        f"Be precise when documenting personal information such as addresses, names, emails, etc., and carefully check the spelling of all details. "
-        f"In this conversation, the sales representative is the one representing Sunwire Inc., and the other person is the customer. Ensure that the sales representative is correctly identified.\n"
-        f"Do not include any details specific to Sunwire Inc., such as Sunwire email addresses (e.g., any ending with sunwire.ca) or internal Sunwire information, under the client's information. Such details should only be mentioned under the Phone Call Key Points or elsewhere as relevant.\n"     
-        f"After transcribing the audio, if the content is not a conversation or contains irrelevant information (such as hold music), respond with 'The audio content does not contain a valid conversation for summarization.' Otherwise, summarize the content as instructed."
-        f"The summary should follow the format below:\n\n"
-        f"Client Information:\n"
-        f"Phone Call Key Points: {text}\n"
-        f"Customer Notes: Identify the customer based on their inquiries and responses if there is.\n"
-        f"Recommendation: Finally, Give some recommendations for our sale team.\n"
+    """Summarize a call transcript using the Chat Completions API."""
 
+    summary_prompt = (
+        "You are a sales assistant tasked with summarizing a phone conversation between a customer and our sales representative at Sunwire Inc. "
+        "Your role is to capture key information from the conversation to help our sales team review it later. "
+        "Be precise when documenting personal information such as addresses, names, emails, etc., and carefully check the spelling of all details. "
+        "In this conversation, the sales representative is the one representing Sunwire Inc., and the other person is the customer. Ensure that the sales representative is correctly identified.\n"
+        "Do not include any details specific to Sunwire Inc., such as Sunwire email addresses (e.g., any ending with sunwire.ca) or internal Sunwire information, under the client's information. Such details should only be mentioned under the Phone Call Key Points or elsewhere as relevant.\n"
+        "After transcribing the audio, if the content is not a conversation or contains irrelevant information (such as hold music), respond with 'The audio content does not contain a valid conversation for summarization.' Otherwise, summarize the content as instructed.\n"
+        "The summary should follow the format below:\n\n"
+        "Client Information:\n"
+        "Phone Call Key Points:\n"
+        "Customer Notes: Identify the customer based on their inquiries and responses if there is.\n"
+        "Recommendation: Finally, Give some recommendations for our sales team.\n"
     )
 
     response = client.chat.completions.create(
@@ -48,15 +48,18 @@ def summarize_text(text):
         messages=[
             {
                 "role": "system",
-                "content": "You are a helpful assistant."
+                "content": "You are a helpful assistant.",
             },
             {
                 "role": "user",
-                "content": summary_prompt
-            }
-        ]
+                "content": summary_prompt + f"\n\nTranscript:\n{text}",
+            },
+        ],
     )
     return response.choices[0].message.content
+
+
+
 
 
 
